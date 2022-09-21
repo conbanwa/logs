@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// @version 0.0.1
-// @description last updated at function toLocaleDateString() { [native code] } 11:47:36 PM
+// @version 0.0.2
+// @description last updated at 9/21/2022 11:57:00 PM
 type Level int
 
 type Logger struct {
