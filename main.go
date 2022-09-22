@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// @version 0.0.2
+// @version 0.0.3
 // @description last updated at 9/21/2022 11:57:00 PM
 type Level int
 
@@ -86,19 +86,7 @@ func init() {
 func Assert(b bool, args ...interface{}) {
 	if !b {
 		Log.output(PANIC, A, Concat(args...))
-		os.Exit(1)
-	}
-}
-func MustEqual(a, b interface{}, args ...interface{}) {
-	if a != b {
-		Log.output(PANIC, A, Concat(append(args, a, "not equal to", b)))
-		os.Exit(1)
-	}
-}
-func ExitIfErr(err error, args ...interface{}) {
-	if err != nil {
-		Log.output(PANIC, C, err.Error()+Concat(args...))
-		os.Exit(1)
+		Panic(args...)
 	}
 }
 func NotNil(err error, args ...interface{}) bool {
@@ -108,7 +96,18 @@ func NotNil(err error, args ...interface{}) bool {
 	}
 	return false
 }
-
+func PanicIfErr(err error, args ...interface{}) {
+	if err != nil {
+		Log.output(PANIC, P, err.Error()+Concat(args...))
+		Panic(err.Error() + Concat(args...))
+	}
+}
+func ExitIfErr(err error, args ...interface{}) {
+	if err != nil {
+		Log.output(PANIC, C, err.Error()+Concat(args...))
+		os.Exit(1)
+	}
+}
 func Concat(args ...interface{}) (str string) {
 	return ConcatWith(" ", args...)
 }
@@ -225,7 +224,7 @@ func (l *Logger) SetOut(out io.Writer) {
 }
 func (l *Logger) output(le Level, prefix string, log string) {
 	if l.level <= le {
-		l.Output(3, fmt.Sprintf("%s %s", prefix, log))
+		l.Output(int(le), fmt.Sprintf("%s %s", prefix, log))
 	}
 }
 func (l *Logger) Debug(args ...interface{}) {
