@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func Equal(a, b interface{}) bool {
+func Same(a, b interface{}) bool {
 	if reflect.TypeOf(a).Comparable() && reflect.TypeOf(b).Comparable() {
 		if a == b {
 			return true
@@ -28,69 +28,108 @@ func Equal(a, b interface{}) bool {
 	return false
 }
 
-func IfDiffer(a, b interface{}, args ...interface{}) bool {
-	if !Equal(a, b) {
+func NotSame(a, b interface{}, args ...interface{}) bool {
+	if !Same(a, b) {
 		Log.output(ERROR, E, Concat(append(args, a, "not equal to", b)...))
 		return true
 	}
 	return false
 }
-func PanicIfDiffer(a, b interface{}, args ...interface{}) {
-	if !Equal(a, b) {
+func PanicNotSame(a, b interface{}, args ...interface{}) {
+	if !Same(a, b) {
 		Log.output(PANIC, P, Concat(append(args, a, "not equal to", b)...))
 		Panic(a, b)
 	}
 }
-func ExitIfDiffer(a, b interface{}, args ...interface{}) {
-	if !Equal(a, b) {
+func ExitNotSame(a, b interface{}, args ...interface{}) {
+	if !Same(a, b) {
 		Log.output(FATAL, F, Concat(append(args, a, "not equal to", b)...))
 		os.Exit(1)
 	}
 }
-func AllEqual(args ...interface{}) bool {
+func Uniform(args ...interface{}) bool {
 	if len(args) == 0 {
 		return true
 	}
 	for i := 0; i < len(args); i++ {
 		for j := i + 1; j < len(args); j++ {
-			if !Equal(args[i], args[j]) {
-				Log.output(ERROR, E, Concat(args[i], "not equal to", args[j]))
+			if !Same(args[i], args[j]) {
+				Log.output(ERROR, C, Concat(args[i], "not equal to", args[j]))
 				return false
 			}
 		}
 	}
 	return true
 }
-func AllDistinct(args ...interface{}) bool {
+func Distinct(args ...interface{}) bool {
 	if len(args) == 0 {
 		return true
 	}
 	for i := 0; i < len(args); i++ {
 		for j := i + 1; j < len(args); j++ {
-			if Equal(args[i], args[j]) {
-				Log.output(ERROR, E, Concat(args[i], "is equal to", args[j]))
+			if Same(args[i], args[j]) {
+				Log.output(ERROR, C, Concat(args[i], "is equal to", args[j]))
 				return false
 			}
 		}
 	}
 	return true
 }
-func IfNuance(a, b interface{}, args ...interface{}) bool {
+func NotIdentical(a, b interface{}, args ...interface{}) bool {
 	if a != b {
 		Log.output(ERROR, E, Concat(append(args, a, "not exactly equal to", b)...))
 		return true
 	}
 	return false
 }
-func PanicIfNuance(a, b interface{}, args ...interface{}) {
+func PanicNotIdentical(a, b interface{}, args ...interface{}) {
 	if a != b {
 		Log.output(PANIC, P, Concat(append(args, a, "not exactly equal to", b)...))
 		Panic(a, b)
 	}
 }
-func ExitIfNuance(a, b interface{}, args ...interface{}) {
+func ExitNotIdentical(a, b interface{}, args ...interface{}) {
 	if a != b {
 		Log.output(FATAL, F, Concat(append(args, a, "not exactly equal to", b)...))
+		os.Exit(1)
+	}
+}
+func IfFalse(b bool, args ...interface{}) bool {
+	if !b {
+		Log.output(INFO, A, Concat(args...))
+		return true
+	}
+	return false
+}
+func PanicFalse(b bool, args ...interface{}) {
+	if !b {
+		Log.output(PANIC, A, Concat(args...))
+		Panic(args...)
+	}
+}
+func Assert(b bool, args ...interface{}) {
+	if !b {
+		Log.output(FATAL, A, Concat(args...))
+		os.Exit(1)
+	}
+}
+
+func NotNil(err error, args ...interface{}) bool {
+	if err != nil {
+		Log.output(ERROR, E, fmt.Sprint(err, Concat(args...)))
+		return true
+	}
+	return false
+}
+func PanicNotNil(err error, args ...interface{}) {
+	if err != nil {
+		Log.output(PANIC, P, err.Error()+Concat(args...))
+		Panic(err.Error() + Concat(args...))
+	}
+}
+func ExitNotNil(err error, args ...interface{}) {
+	if err != nil {
+		Log.output(FATAL, F, err.Error()+Concat(args...))
 		os.Exit(1)
 	}
 }

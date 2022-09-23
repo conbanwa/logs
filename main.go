@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// @version 0.0.3
+// @version 0.0.4
 // @description last updated at 9/21/2022 11:57:00 PM
 type Level int
 
@@ -20,14 +20,14 @@ type Logger struct {
 
 var (
 	Log = NewLogger()
-	I   = "I"
-	D   = fmt.Sprintf("\033[0;32;40m%s\033[0m", "D")
-	E   = fmt.Sprintf("\033[0;35;40m%s\033[0m", "E")
+	I   = fmt.Sprintf("\033[1;36;40m%s\033[0m", "I")
+	D   = fmt.Sprintf("\033[1;32;40m%s\033[0m", "D")
+	E   = fmt.Sprintf("\033[1;35;40m%s\033[0m", "E")
 	W   = fmt.Sprintf("\033[1;33;40m%s\033[0m", "W")
+	P   = fmt.Sprintf("\033[1;35;40m%s\033[0m", "P")
 	F   = fmt.Sprintf("\033[1;31;40m%s\033[0m", "F")
-	P   = fmt.Sprintf("\033[1;31;40m%s\033[0m", "P")
-	A   = fmt.Sprintf("\033[1;31;40m%s\033[0m", "A")
-	C   = fmt.Sprintf("\033[1;31;40m%s\033[0m", "C")
+	A   = fmt.Sprintf("\033[1;34;40m%s\033[0m", "A")
+	C   = fmt.Sprintf("\033[1;34;40m%s\033[0m", "C")
 )
 
 const (
@@ -83,31 +83,6 @@ func init() {
 	}
 }
 
-func Assert(b bool, args ...interface{}) {
-	if !b {
-		Log.output(PANIC, A, Concat(args...))
-		Panic(args...)
-	}
-}
-func NotNil(err error, args ...interface{}) bool {
-	if err != nil {
-		Log.output(ERROR, E, fmt.Sprint(err, Concat(args...)))
-		return true
-	}
-	return false
-}
-func PanicIfErr(err error, args ...interface{}) {
-	if err != nil {
-		Log.output(PANIC, P, err.Error()+Concat(args...))
-		Panic(err.Error() + Concat(args...))
-	}
-}
-func ExitIfErr(err error, args ...interface{}) {
-	if err != nil {
-		Log.output(PANIC, C, err.Error()+Concat(args...))
-		os.Exit(1)
-	}
-}
 func Concat(args ...interface{}) (str string) {
 	return ConcatWith(" ", args...)
 }
