@@ -121,6 +121,14 @@ func NotNil(err error, args ...interface{}) bool {
 	}
 	return false
 }
+func AppendNotNil(err *error, args ...interface{}) bool {
+	if *err != nil {
+		*err = fmt.Errorf("%v%v", *err, Concat(args...))
+		Log.output(ERROR, E, fmt.Sprint(err, Concat(args...)))
+		return true
+	}
+	return false
+}
 func PanicNotNil(err error, args ...interface{}) {
 	if err != nil {
 		Log.output(PANIC, P, err.Error()+Concat(args...))

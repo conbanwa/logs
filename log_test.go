@@ -14,9 +14,9 @@ var maps2 = map[string]int64{"1": 1, "2": 2, "3": 3}
 
 func TestEqual(t *testing.T) {
 	t.Log(logs.Same(array, array2))
+	t.Log(logs.Same(maps2, maps3))
 	t.Log(logs.Same(maps, maps2))
 	t.Log(logs.Same(maps, maps3))
-	t.Log(logs.Same(maps2, maps3))
 	t.Log(logs.Same(array, maps))
 	t.Log(logs.Same(array, maps2))
 	t.Log(logs.Same(array, maps3))

@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// @version 0.0.4
+// @version 0.0.5
 // @description last updated at 9/21/2022 11:57:00 PM
 type Level int
 
@@ -40,7 +40,7 @@ const (
 )
 
 func NewLogger() *Logger {
-	if os.Getenv("PORT") == "8080" {
+	if os.Getenv("ENV") != "" {
 		return &Logger{
 			Logger: log.New(os.Stderr, "", log.Lshortfile|log.Ltime|log.Lmsgprefix|log.Lmicroseconds),
 			level:  DEBUG,
