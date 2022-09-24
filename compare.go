@@ -75,20 +75,20 @@ func Distinct(args ...interface{}) bool {
 	}
 	return true
 }
-func NotIdentical(a, b interface{}, args ...interface{}) bool {
+func IfNotIdentical(a, b interface{}, args ...interface{}) bool {
 	if a != b {
 		Log.output(ERROR, E, Concat(append(args, a, "not exactly equal to", b)...))
 		return true
 	}
 	return false
 }
-func PanicNotIdentical(a, b interface{}, args ...interface{}) {
+func PanicIfNotIdentical(a, b interface{}, args ...interface{}) {
 	if a != b {
 		Log.output(PANIC, P, Concat(append(args, a, "not exactly equal to", b)...))
 		Panic(a, b)
 	}
 }
-func ExitNotIdentical(a, b interface{}, args ...interface{}) {
+func ExitIfNotIdentical(a, b interface{}, args ...interface{}) {
 	if a != b {
 		Log.output(FATAL, F, Concat(append(args, a, "not exactly equal to", b)...))
 		os.Exit(1)
