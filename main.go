@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// @version 0.0.5
+// @version 0.0.6
 // @description last updated at 9/21/2022 11:57:00 PM
 type Level int
 

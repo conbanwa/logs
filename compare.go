@@ -174,3 +174,10 @@ func ToFloat64(a interface{}) (f float64, err error) {
 	}
 	return
 }
+
+func Write(args ...interface{}) {
+	str := Concat(args...)
+	//output to stdout
+	b := []byte(str)
+	os.Stdout.Write(b)
+}

@@ -12,6 +12,10 @@ var maps = map[string]int{"a": 1, "b": 2, "c": 3}
 var maps3 = map[string]int{"1": 1, "2": 2, "3": 3}
 var maps2 = map[string]int64{"1": 1, "2": 2, "3": 3}
 
+func TestWrite(t *testing.T) {
+	logs.Write("test")
+}
+
 func TestEqual(t *testing.T) {
 	t.Log(logs.Same(array, array2))
 	t.Log(logs.Same(maps2, maps3))
