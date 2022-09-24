@@ -179,5 +179,5 @@ func Write(args ...interface{}) {
 	str := Concat(args...)
 	//output to stdout
 	b := []byte(str)
-	os.Stdout.Write(b)
+	os.Stderr.Write(b)
 }
