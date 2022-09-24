@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// @version 0.1.2
-// @license.name last updated at 9/24/2022 4:40:18 PM
+// @version 0.1.3
+// @license.name last updated at 9/24/2022 5:34:49 PM
 type Level int
 
 type Logger struct {
@@ -199,7 +199,7 @@ func (l *Logger) SetOut(out io.Writer) {
 }
 func (l *Logger) output(le Level, prefix string, log string) {
 	if l.level <= le {
-		l.Output(int(le), fmt.Sprintf("%s %s", prefix, log))
+		l.Output(3, fmt.Sprintf("%s %s", prefix, log))
 	}
 }
 func (l *Logger) Debug(args ...interface{}) {
