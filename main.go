@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// @version 0.1.3
-// @license.name last updated at 9/24/2022 5:34:49 PM
+// @version 0.1.4
+// @license.name last updated at 9/26/2022 10:59:33 AM
 type Level int
 
 type Logger struct {
@@ -51,6 +51,7 @@ func NewLogger() *Logger {
 		level:  DEBUG,
 	}
 }
+
 func init() {
 	logLevel := os.Getenv("LOG_LEVEL")
 	logFileName := os.Getenv("LOG_FILE")
@@ -86,6 +87,7 @@ func init() {
 func Concat(args ...interface{}) (str string) {
 	return ConcatWith(" ", args...)
 }
+
 func ConcatWith(separator string, args ...interface{}) (str string) {
 	for i, param := range args {
 		if i == len(args)-1 {
@@ -95,6 +97,7 @@ func ConcatWith(separator string, args ...interface{}) (str string) {
 	}
 	return
 }
+
 func Dye(highlight int, color string, args ...interface{}) string {
 	str := Concat(args...)
 	n := "37"
@@ -116,128 +119,163 @@ func Dye(highlight int, color string, args ...interface{}) string {
 	}
 	return fmt.Sprintf("\033["+strconv.Itoa(highlight)+";"+n+";40m%s\033[0m", str)
 }
+
 func Highlight(color string, args ...interface{}) {
 	Log.output(INFO, I, Dye(1, color, args...))
 }
+
 func Red(args ...interface{}) {
 	Log.output(INFO, I, Dye(0, "red", args...))
 }
+
 func Green(args ...interface{}) {
 	Log.output(INFO, I, Dye(0, "green", args...))
 }
+
 func Yellow(args ...interface{}) {
 	Log.output(INFO, I, Dye(0, "yellow", args...))
 }
+
 func Blue(args ...interface{}) {
 	Log.output(INFO, I, Dye(0, "blue", args...))
 }
+
 func Magenta(args ...interface{}) {
 	Log.output(INFO, I, Dye(0, "magenta", args...))
 }
+
 func Cyan(args ...interface{}) {
 	Log.output(INFO, I, Dye(0, "cyan", args...))
 }
+
 func SetOut(out io.Writer) {
 	Log.SetOut(out)
 }
+
 func SetLevel(level Level) {
 	Log.SetLevel(level)
 }
+
 func Debug(args ...interface{}) {
 	Log.output(DEBUG, D, Concat(args...))
 }
+
 func Debugf(format string, args ...interface{}) {
 	Log.output(DEBUG, D, fmt.Sprintf(format, args...))
 }
+
 func Info(args ...interface{}) {
 	Log.output(INFO, I, Concat(args...))
 }
+
 func Infof(format string, args ...interface{}) {
 	Log.output(INFO, I, fmt.Sprintf(format, args...))
 }
+
 func Warn(args ...interface{}) {
 	Log.output(WARN, W, Concat(args...))
 }
+
 func Warnf(format string, args ...interface{}) {
 	Log.output(WARN, W, fmt.Sprintf(format, args...))
 }
+
 func Error(args ...interface{}) {
 	Log.output(ERROR, E, Concat(args...))
 }
+
 func Errorf(format string, args ...interface{}) {
 	Log.output(ERROR, E, fmt.Sprintf(format, args...))
 }
+
 func Fatal(args ...interface{}) {
 	if Log.level <= FATAL {
 		Log.output(FATAL, F, Concat(args...))
 		os.Exit(1)
 	}
 }
+
 func Fatalf(format string, args ...interface{}) {
 	if Log.level <= FATAL {
 		Log.output(FATAL, F, fmt.Sprintf(format, args...))
 		os.Exit(1)
 	}
 }
+
 func Panic(args ...interface{}) {
 	if Log.level <= PANIC {
 		Log.output(PANIC, P, Concat(args...))
 		panic(Concat(args...))
 	}
 }
+
 func Panicf(format string, args ...interface{}) {
 	if Log.level <= PANIC {
 		Log.output(PANIC, P, fmt.Sprintf(format, args...))
 		panic(Concat(args...))
 	}
 }
+
 func (l *Logger) SetLevel(level Level) {
 	l.level = level
 }
+
 func (l *Logger) SetOut(out io.Writer) {
 	l.Logger.SetOutput(out)
 }
+
 func (l *Logger) output(le Level, prefix string, log string) {
 	if l.level <= le {
 		l.Output(3, fmt.Sprintf("%s %s", prefix, log))
 	}
 }
+
 func (l *Logger) Debug(args ...interface{}) {
 	l.output(DEBUG, D, fmt.Sprint(args...))
 }
+
 func (l *Logger) Debugf(format string, args ...interface{}) {
 	l.output(DEBUG, D, fmt.Sprintf(format, args...))
 }
+
 func (l *Logger) Info(args ...interface{}) {
 	l.output(INFO, I, fmt.Sprint(args...))
 }
+
 func (l *Logger) Infof(format string, args ...interface{}) {
 	l.output(INFO, I, fmt.Sprintf(format, args...))
 }
+
 func (l *Logger) Warn(args ...interface{}) {
 	l.output(WARN, W, fmt.Sprint(args...))
 }
+
 func (l *Logger) Warnf(format string, args ...interface{}) {
 	l.output(WARN, W, fmt.Sprintf(format, args...))
 }
+
 func (l *Logger) Error(args ...interface{}) {
 	l.output(ERROR, E, fmt.Sprint(args...))
 }
+
 func (l *Logger) Errorf(format string, args ...interface{}) {
 	l.output(ERROR, E, fmt.Sprintf(format, args...))
 }
+
 func (l *Logger) Fatal(args ...interface{}) {
 	if l.level <= FATAL {
 		l.output(FATAL, F, fmt.Sprint(args...))
 		os.Exit(1)
 	}
 }
+
 func (l *Logger) Fatalf(format string, args ...interface{}) {
 	if l.level <= FATAL {
 		l.output(FATAL, F, fmt.Sprintf(format, args...))
 		os.Exit(1)
 	}
 }
+
 func (l *Logger) Panic(args ...interface{}) {
 	if l.level <= PANIC {
 		s := fmt.Sprint(args...)
@@ -245,6 +283,7 @@ func (l *Logger) Panic(args ...interface{}) {
 		panic(s)
 	}
 }
+
 func (l *Logger) Panicf(format string, args ...interface{}) {
 	if l.level <= PANIC {
 		s := fmt.Sprintf(format, args...)

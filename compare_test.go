@@ -13,10 +13,11 @@ var maps3 = map[string]int{"1": 1, "2": 2, "3": 3}
 var maps2 = map[string]int64{"1": 1, "2": 2, "3": 3}
 
 func TestWrite(t *testing.T) {
-	logs.Write("test")
+	logs.Inline("test")
 }
 
 func TestEqual(t *testing.T) {
+	logs.NotSame(2+3, '5', "2+3 is not 5")
 	t.Log(logs.Same(array, array2))
 	t.Log(logs.Same(maps2, maps3))
 	t.Log(logs.Same(maps, maps2))

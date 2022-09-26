@@ -12,8 +12,7 @@ func TestLog(t *testing.T) {
 	logs.Info("hello world")
 	logs.Blue("hello world")
 	for i := 0; i < 10; i++ {
-		logs.Write("hello world")
+		logs.Inline("hello world")
 	}
 	logs.Green("hello world")
-	logs.NotSame(2+3, '5', "2+3 is not 5")
 }
