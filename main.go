@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// @version 0.1.5
-// @license.name last updated at 9/28/2022 3:49:14 PM
+// @version 0.1.6
+// @license.name last updated at 9/28/2022 5:32:37 PM
 type Level int
 
 type Logger struct {

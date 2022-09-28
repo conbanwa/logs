@@ -27,7 +27,7 @@ func Same(a, b interface{}) bool {
 
 func NotSame(a, b interface{}, args ...interface{}) bool {
 	if !Same(a, b) {
-		Log.output(ERROR, E, Concat(append(args, a, "not equal to", b)...))
+		Log.output(ERROR, E, Concat(append(args, ": ", a, "not equal to", b)...))
 		return true
 	}
 	return false
@@ -35,14 +35,14 @@ func NotSame(a, b interface{}, args ...interface{}) bool {
 
 func PanicNotSame(a, b interface{}, args ...interface{}) {
 	if !Same(a, b) {
-		Log.output(PANIC, P, Concat(append(args, a, "not equal to", b)...))
+		Log.output(PANIC, P, Concat(append(args, ": ", a, "not equal to", b)...))
 		Panic(a, b)
 	}
 }
 
 func ExitNotSame(a, b interface{}, args ...interface{}) {
 	if !Same(a, b) {
-		Log.output(FATAL, F, Concat(append(args, a, "not equal to", b)...))
+		Log.output(FATAL, F, Concat(append(args, ": ", a, "not equal to", b)...))
 		os.Exit(1)
 	}
 }
@@ -79,7 +79,7 @@ func Distinct(args ...interface{}) bool {
 
 func IfNotIdentical(a, b interface{}, args ...interface{}) bool {
 	if a != b {
-		Log.output(ERROR, E, Concat(append(args, a, "not exactly equal to", b)...))
+		Log.output(ERROR, E, Concat(append(args, ": ", a, "not exactly equal to", b)...))
 		return true
 	}
 	return false
@@ -87,14 +87,14 @@ func IfNotIdentical(a, b interface{}, args ...interface{}) bool {
 
 func PanicIfNotIdentical(a, b interface{}, args ...interface{}) {
 	if a != b {
-		Log.output(PANIC, P, Concat(append(args, a, "not exactly equal to", b)...))
+		Log.output(PANIC, P, Concat(append(args, ": ", a, "not exactly equal to", b)...))
 		Panic(a, b)
 	}
 }
 
 func ExitIfNotIdentical(a, b interface{}, args ...interface{}) {
 	if a != b {
-		Log.output(FATAL, F, Concat(append(args, a, "not exactly equal to", b)...))
+		Log.output(FATAL, F, Concat(append(args, ": ", a, "not exactly equal to", b)...))
 		os.Exit(1)
 	}
 }
@@ -132,7 +132,7 @@ func NotNil(err error, args ...interface{}) bool {
 func AppendNotNil(err *error, args ...interface{}) bool {
 	if *err != nil {
 		*err = fmt.Errorf("%v%v", *err, Concat(args...))
-		Log.output(ERROR, E, fmt.Sprint(err, Concat(args...)))
+		Log.output(ERROR, E, fmt.Sprint(Concat(args...), " ", err))
 		return true
 	}
 	return false
