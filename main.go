@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// @version 0.1.4
-// @license.name last updated at 9/26/2022 10:59:33 AM
+// @version 0.1.5
+// @license.name last updated at 9/28/2022 3:49:14 PM
 type Level int
 
 type Logger struct {
@@ -205,14 +205,12 @@ func Fatalf(format string, args ...interface{}) {
 func Panic(args ...interface{}) {
 	if Log.level <= PANIC {
 		Log.output(PANIC, P, Concat(args...))
-		panic(Concat(args...))
 	}
 }
 
 func Panicf(format string, args ...interface{}) {
 	if Log.level <= PANIC {
 		Log.output(PANIC, P, fmt.Sprintf(format, args...))
-		panic(Concat(args...))
 	}
 }
 
@@ -225,8 +223,11 @@ func (l *Logger) SetOut(out io.Writer) {
 }
 
 func (l *Logger) output(le Level, prefix string, log string) {
-	if l.level <= le {
+	if le >= l.level {
 		l.Output(3, fmt.Sprintf("%s %s", prefix, log))
+	}
+	if le >= PANIC {
+		panic(log)
 	}
 }
 
@@ -280,7 +281,6 @@ func (l *Logger) Panic(args ...interface{}) {
 	if l.level <= PANIC {
 		s := fmt.Sprint(args...)
 		l.output(PANIC, P, s)
-		panic(s)
 	}
 }
 
@@ -288,6 +288,5 @@ func (l *Logger) Panicf(format string, args ...interface{}) {
 	if l.level <= PANIC {
 		s := fmt.Sprintf(format, args...)
 		l.output(PANIC, P, s)
-		panic(s)
 	}
 }
