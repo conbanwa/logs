@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// @version 0.1.6
-// @license.name last updated at 9/28/2022 5:32:37 PM
+// @version 0.1.7
+// @license.name last updated at 9/30/2022 10:14:33 PM
 type Level int
 
 type Logger struct {
@@ -72,7 +72,7 @@ func init() {
 	default:
 		l = DEBUG
 	}
-	SetLevel(l)
+	SetLogLevel(l)
 	if logFileName != "" {
 		f, err := os.OpenFile(logFileName, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0644)
 		if err == nil {
@@ -152,8 +152,28 @@ func SetOut(out io.Writer) {
 	Log.SetOut(out)
 }
 
-func SetLevel(level Level) {
-	Log.SetLevel(level)
+func SetLogLevel(level Level) {
+	Log.SetLogLevel(level)
+}
+
+//SetLogLevel by string
+func SetLevel(level string) {
+	switch strings.ToLower(level) {
+	case "debug", "DEBUG":
+		SetLogLevel(DEBUG)
+	case "info", "INFO":
+		SetLogLevel(INFO)
+	case "warn", "WARN":
+		SetLogLevel(WARN)
+	case "error", "ERROR":
+		SetLogLevel(ERROR)
+	case "fatal", "FATAL":
+		SetLogLevel(FATAL)
+	case "panic", "PANIC":
+		SetLogLevel(PANIC)
+	default:
+		SetLogLevel(DEBUG)
+	}
 }
 
 func Debug(args ...interface{}) {
@@ -214,7 +234,7 @@ func Panicf(format string, args ...interface{}) {
 	}
 }
 
-func (l *Logger) SetLevel(level Level) {
+func (l *Logger) SetLogLevel(level Level) {
 	l.level = level
 }
 
