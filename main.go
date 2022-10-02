@@ -2,124 +2,10 @@ package logs
 
 import (
 	"fmt"
-	"io"
-	"log"
-	"os"
-	"strconv"
-	"strings"
 )
 
-// @version 0.1.8
-// @license.name last updated at 10/2/2022 3:39:44 PM
-type Level int
-
-type Logger struct {
-	*log.Logger
-	level Level
-}
-
-var (
-	Log = NewLogger()
-	I   = fmt.Sprintf("\033[1;36;40m%s\033[0m", "I")
-	D   = fmt.Sprintf("\033[1;32;40m%s\033[0m", "D")
-	E   = fmt.Sprintf("\033[1;35;40m%s\033[0m", "E")
-	W   = fmt.Sprintf("\033[1;33;40m%s\033[0m", "W")
-	P   = fmt.Sprintf("\033[1;35;40m%s\033[0m", "P")
-	F   = fmt.Sprintf("\033[1;31;40m%s\033[0m", "F")
-	A   = fmt.Sprintf("\033[1;34;40m%s\033[0m", "A")
-	C   = fmt.Sprintf("\033[1;34;40m%s\033[0m", "C")
-)
-
-const (
-	DEBUG Level = iota + 1
-	INFO
-	WARN
-	ERROR
-	FATAL
-	PANIC
-)
-
-func NewLogger() *Logger {
-	if os.Getenv("ENV") != "" {
-		return &Logger{
-			Logger: log.New(os.Stderr, "", log.Lshortfile|log.Ltime|log.Lmsgprefix|log.Lmicroseconds),
-			level:  DEBUG,
-		}
-	}
-	return &Logger{
-		Logger: log.New(os.Stderr, "", log.Llongfile|log.Ltime|log.Lmsgprefix),
-		level:  DEBUG,
-	}
-}
-
-func init() {
-	logLevel := os.Getenv("LOG_LEVEL")
-	logFileName := os.Getenv("LOG_FILE")
-	var l Level
-	switch strings.ToLower(logLevel) {
-	case "debug", "DEBUG":
-		l = DEBUG
-	case "info", "INFO":
-		l = INFO
-	case "warn", "WARN":
-		l = WARN
-	case "error", "ERROR":
-		l = ERROR
-	case "fatal", "FATAL":
-		l = FATAL
-	case "panic", "PANIC":
-		l = PANIC
-	default:
-		l = DEBUG
-	}
-	SetLogLevel(l)
-	if logFileName != "" {
-		f, err := os.OpenFile(logFileName, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0644)
-		if err == nil {
-			SetOut(f)
-		} else {
-			Warn("log file not open ??? ")
-			Error(err.Error())
-		}
-	}
-}
-
-func Concat(args ...interface{}) (str string) {
-	return ConcatWith(" ", args...)
-}
-
-func ConcatWith(separator string, args ...interface{}) (str string) {
-	for i, param := range args {
-		if i == len(args)-1 {
-			separator = ""
-		}
-		str += fmt.Sprint(param) + separator
-	}
-	return
-}
-
-func Dye(highlight int, color string, args ...interface{}) string {
-	str := Concat(args...)
-	n := "37"
-	switch color {
-	case "red":
-		n = "31"
-	case "green":
-		n = "32"
-	case "yellow":
-		n = "33"
-	case "blue":
-		n = "34"
-	case "magenta":
-		n = "35"
-	case "cyan":
-		n = "36"
-	default:
-		n = "33"
-	}
-	return fmt.Sprintf("\033["+strconv.Itoa(highlight)+";"+n+";40m%s\033[0m", str)
-}
-
+// @version 0.1.9
+// @license.name last updated at 10/2/2022 4:05:49 PM
 func Highlight(color string, args ...interface{}) {
 	Log.output(INFO, I, Dye(1, color, args...))
 }
@@ -148,32 +34,8 @@ func Cyan(args ...interface{}) {
 	Log.output(INFO, I, Dye(0, "cyan", args...))
 }
 
-func SetOut(out io.Writer) {
-	Log.SetOut(out)
-}
-
 func SetLogLevel(level Level) {
 	Log.SetLogLevel(level)
-}
-
-//SetLogLevel by string
-func SetLevel(level string) {
-	switch strings.ToLower(level) {
-	case "debug", "DEBUG":
-		SetLogLevel(DEBUG)
-	case "info", "INFO":
-		SetLogLevel(INFO)
-	case "warn", "WARN":
-		SetLogLevel(WARN)
-	case "error", "ERROR":
-		SetLogLevel(ERROR)
-	case "fatal", "FATAL":
-		SetLogLevel(FATAL)
-	case "panic", "PANIC":
-		SetLogLevel(PANIC)
-	default:
-		SetLogLevel(DEBUG)
-	}
 }
 
 func Debug(args ...interface{}) {
@@ -211,14 +73,14 @@ func Errorf(format string, args ...interface{}) {
 func Fatal(args ...interface{}) {
 	if Log.level <= FATAL {
 		Log.output(FATAL, F, Concat(args...))
-		os.Exit(1)
+		exit(1)
 	}
 }
 
 func Fatalf(format string, args ...interface{}) {
 	if Log.level <= FATAL {
 		Log.output(FATAL, F, fmt.Sprintf(format, args...))
-		os.Exit(1)
+		exit(1)
 	}
 }
 
@@ -236,10 +98,6 @@ func Panicf(format string, args ...interface{}) {
 
 func (l *Logger) SetLogLevel(level Level) {
 	l.level = level
-}
-
-func (l *Logger) SetOut(out io.Writer) {
-	l.Logger.SetOutput(out)
 }
 
 func (l *Logger) output(le Level, prefix string, log string) {
@@ -286,14 +144,14 @@ func (l *Logger) Errorf(format string, args ...interface{}) {
 func (l *Logger) Fatal(args ...interface{}) {
 	if l.level <= FATAL {
 		l.output(FATAL, F, fmt.Sprint(args...))
-		os.Exit(1)
+		exit(1)
 	}
 }
 
 func (l *Logger) Fatalf(format string, args ...interface{}) {
 	if l.level <= FATAL {
 		l.output(FATAL, F, fmt.Sprintf(format, args...))
-		os.Exit(1)
+		exit(1)
 	}
 }
 

@@ -2,31 +2,84 @@ package logs
 
 import (
 	"fmt"
+	"io"
+	"log"
 	"os"
 	"strconv"
 )
 
-func Sprint(args ...interface{}) string {
-	Log.output(INFO, I, Concat(args...))
-	return Concat(args...)
+func NewLogger() *Logger {
+	if os.Getenv("ENV") != "" {
+		return &Logger{
+			Logger: log.New(os.Stderr, "", log.Lshortfile|log.Ltime|log.Lmsgprefix|log.Lmicroseconds),
+			level:  DEBUG,
+		}
+	}
+	return &Logger{
+		Logger: log.New(os.Stderr, "", log.Llongfile|log.Ltime|log.Lmsgprefix),
+		level:  DEBUG,
+	}
 }
 
-func Same(a, b interface{}) bool {
-	if a == b {
-		return true
+func init() {
+	logLevel := os.Getenv("LOG_LEVEL")
+	logFileName := os.Getenv("LOG_FILE")
+	SetLevel(logLevel)
+	if logFileName != "" {
+		f, err := os.OpenFile(logFileName, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0644)
+		if err == nil {
+			SetOut(f)
+		} else {
+			Warn("log file not open ??? ")
+			Error(err.Error())
+		}
 	}
-	fa, era := ToFloat64(a)
-	fb, erb := ToFloat64(b)
-	if era == nil && erb == nil {
-		return fa == fb
+}
+
+func SetOut(out io.Writer) {
+	Log.SetOut(out)
+}
+
+func (l *Logger) SetOut(out io.Writer) {
+	l.Logger.SetOutput(out)
+}
+
+func Concat(args ...interface{}) (str string) {
+	return ConcatWith(" ", args...)
+}
+
+func ConcatWith(separator string, args ...interface{}) (str string) {
+	for i, param := range args {
+		if i == len(args)-1 {
+			separator = ""
+		}
+		str += fmt.Sprint(param) + separator
 	}
-	if fmt.Sprint(a) == fmt.Sprint(b) {
-		return true
+	return
+}
+
+//SetLogLevel by string
+func SetLevel(level string) {
+	SetLogLevel(StringLevel(level))
+}
+
+func StringLevel(level string) Level {
+	switch level {
+	case "debug", "DEBUG":
+		return DEBUG
+	case "info", "INFO":
+		return INFO
+	case "warn", "WARN":
+		return WARN
+	case "error", "ERROR":
+		return ERROR
+	case "fatal", "FATAL":
+		return FATAL
+	case "panic", "PANIC":
+		return PANIC
+	default:
+		return DEBUG
 	}
-	if fmt.Sprintf("%v", a) == fmt.Sprintf("%v", b) {
-		return true
-	}
-	return false
 }
 
 func ToFloat64(a interface{}) (f float64, err error) {
@@ -63,40 +116,40 @@ func ToFloat64(a interface{}) (f float64, err error) {
 	return
 }
 
+func Dye(highlight int, color string, args ...interface{}) string {
+	str := Concat(args...)
+	n := "37"
+	switch color {
+	case "red":
+		n = "31"
+	case "green":
+		n = "32"
+	case "yellow":
+		n = "33"
+	case "blue":
+		n = "34"
+	case "magenta":
+		n = "35"
+	case "cyan":
+		n = "36"
+	default:
+		n = "33"
+	}
+	return fmt.Sprintf("\033["+strconv.Itoa(highlight)+";"+n+";40m%s\033[0m", str)
+}
+
+func Sprint(args ...interface{}) string {
+	Log.output(INFO, I, Concat(args...))
+	return Concat(args...)
+}
+
+func exit(code int) {
+	os.Exit(code)
+}
+
 func Inline(args ...interface{}) {
 	str := Concat(args...)
 	//output to stdout
 	b := []byte(str)
 	os.Stderr.Write(b)
-}
-
-func NotNil(err error, args ...interface{}) bool {
-	if err != nil {
-		Log.output(ERROR, E, err.Error()+":"+Concat(args...))
-		return true
-	}
-	return false
-}
-
-func AppendNotNil(err *error, args ...interface{}) bool {
-	if *err != nil {
-		*err = fmt.Errorf("%v%v", *err, Concat(args...))
-		Log.output(ERROR, E, (*err).Error()+":"+Concat(args...))
-		return true
-	}
-	return false
-}
-
-func PanicNotNil(err error, args ...interface{}) {
-	if err != nil {
-		Log.output(PANIC, P, err.Error()+":"+Concat(args...))
-		Panic(err.Error() + Concat(args...))
-	}
-}
-
-func ExitNotNil(err error, args ...interface{}) {
-	if err != nil {
-		Log.output(FATAL, F, err.Error()+":"+Concat(args...))
-		os.Exit(1)
-	}
 }
