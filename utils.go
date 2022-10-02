@@ -8,19 +8,6 @@ import (
 	"strconv"
 )
 
-func NewLogger() *Logger {
-	if os.Getenv("ENV") != "" {
-		return &Logger{
-			Logger: log.New(os.Stderr, "", log.Lshortfile|log.Ltime|log.Lmsgprefix|log.Lmicroseconds),
-			level:  DEBUG,
-		}
-	}
-	return &Logger{
-		Logger: log.New(os.Stderr, "", log.Llongfile|log.Ltime|log.Lmsgprefix),
-		level:  DEBUG,
-	}
-}
-
 func init() {
 	logLevel := os.Getenv("LOG_LEVEL")
 	logFileName := os.Getenv("LOG_FILE")
@@ -33,6 +20,19 @@ func init() {
 			Warn("log file not open ??? ")
 			Error(err.Error())
 		}
+	}
+}
+
+func NewLogger() *Logger {
+	if os.Getenv("ENV") != "" {
+		return &Logger{
+			Logger: log.New(os.Stderr, "", log.Lshortfile|log.Ltime|log.Lmsgprefix|log.Lmicroseconds),
+			level:  DEBUG,
+		}
+	}
+	return &Logger{
+		Logger: log.New(os.Stderr, "", log.Llongfile|log.Ltime|log.Lmsgprefix),
+		level:  DEBUG,
 	}
 }
 

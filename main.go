@@ -4,8 +4,9 @@ import (
 	"fmt"
 )
 
-// @version 0.1.9
-// @license.name last updated at 10/2/2022 4:05:49 PM
+// @version 0.2.0
+// @license.name last updated at 10/2/2022 4:33:13 PM
+
 func Highlight(color string, args ...interface{}) {
 	Log.output(INFO, I, Dye(1, color, args...))
 }
