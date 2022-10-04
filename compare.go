@@ -1,9 +1,12 @@
 package logs
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 func Same(a, b interface{}) bool {
-	if a == b {
+	if reflect.TypeOf(a).Comparable() && reflect.TypeOf(b).Comparable() && a == b {
 		return true
 	}
 	fa, era := ToFloat64(a)

@@ -15,4 +15,6 @@ func TestLog(t *testing.T) {
 		logs.Inline("hello world")
 	}
 	logs.Green("hello world")
+	logs.Info("hello world")
+	logs.Blue("hello world")
 }
