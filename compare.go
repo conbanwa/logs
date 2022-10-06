@@ -23,6 +23,14 @@ func Same(a, b interface{}) bool {
 	return false
 }
 
+func IfSame(a, b interface{}, args ...interface{}) bool {
+	if Same(a, b) {
+		Log.output(INFO, A, Concat(args...))
+		return true
+	}
+	return false
+}
+
 func NotSame(a, b interface{}, args ...interface{}) bool {
 	if !Same(a, b) {
 		Log.output(ERROR, E, Concat(append(args, ": ", a, "not equal to", b)...))
