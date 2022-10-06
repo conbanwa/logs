@@ -4,8 +4,8 @@ import (
 	"fmt"
 )
 
-// @version 0.2.3
-// @license.name last updated at 10/6/2022 1:36:01 PM
+// @version 0.2.4
+// @license.name last updated at 10/6/2022 1:43:34 PM
 
 func Highlight(color string, args ...interface{}) {
 	Log.output(INFO, I, Dye(1, color, args...))
@@ -102,11 +102,11 @@ func (l *Logger) SetLogLevel(level Level) {
 }
 
 func (l *Logger) output(le Level, prefix string, log string) {
-	if InlineEnd {
-		Inline("\n")
-		InlineEnd = false
-	}
 	if le >= l.level {
+		if InlineEnd {
+			Inline("\n")
+			InlineEnd = false
+		}
 		l.Output(3, fmt.Sprintf("%s %s", prefix, log))
 	}
 	if le >= PANIC {
