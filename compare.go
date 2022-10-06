@@ -6,6 +6,12 @@ import (
 )
 
 func Same(a, b interface{}) bool {
+	if a == nil {
+		return b == nil
+	}
+	if b == nil {
+		return false
+	}
 	if reflect.TypeOf(a).Comparable() && reflect.TypeOf(b).Comparable() && a == b {
 		return true
 	}
