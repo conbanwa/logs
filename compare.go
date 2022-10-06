@@ -25,7 +25,7 @@ func Same(a, b interface{}) bool {
 
 func IfSame(a, b interface{}, args ...interface{}) bool {
 	if Same(a, b) {
-		Log.output(INFO, A, Concat(args...))
+		Log.output(INFO, A, Concat(append(args, ":", a)...))
 		return true
 	}
 	return false
