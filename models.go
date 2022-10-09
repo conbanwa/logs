@@ -24,8 +24,8 @@ const (
 	INFO
 	WARN
 	ERROR
-	FATAL
 	PANIC
+	FATAL
 )
 
 type Level int
