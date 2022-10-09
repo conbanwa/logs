@@ -23,7 +23,7 @@ func TestWrite(t *testing.T) {
 }
 
 func TestEqual(t *testing.T) {
-	logs.NotSame(2+3, '5', "2+3 is not 5")
+	logs.ErrorIfNotSame(2+3, '5', "2+3 is not 5")
 	t.Log(logs.Same(array, array2))
 	t.Log(logs.Same(maps2, maps3))
 	t.Log(logs.Same(maps, maps2))
