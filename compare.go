@@ -113,7 +113,7 @@ func Uniform(args ...interface{}) bool {
 	for i := 0; i < len(args); i++ {
 		for j := i + 1; j < len(args); j++ {
 			if !Same(args[i], args[j]) {
-				Log.output(ERROR, C, Concat(args[i], "not equal to", args[j]))
+				Log.output(ERROR, C, Concat(args...))
 				return false
 			}
 		}
@@ -128,7 +128,7 @@ func Distinct(args ...interface{}) bool {
 	for i := 0; i < len(args); i++ {
 		for j := i + 1; j < len(args); j++ {
 			if Same(args[i], args[j]) {
-				Log.output(ERROR, C, Concat(args[i], "is equal to", args[j]))
+				Log.output(ERROR, C, Concat(args...))
 				return false
 			}
 		}
