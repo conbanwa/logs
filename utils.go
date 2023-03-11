@@ -58,7 +58,7 @@ func ConcatWith(separator string, args ...interface{}) (str string) {
 	return
 }
 
-//SetLogLevel by string
+// SetLogLevel by string
 func SetLevel(level string) {
 	SetLogLevel(StringLevel(level))
 }
@@ -82,7 +82,7 @@ func StringLevel(level string) Level {
 	}
 }
 
-func ToFloat64(a interface{}) (f float64, err error) {
+func ParseFloat64(a interface{}) (f float64, err error) {
 	switch a := a.(type) {
 	case int:
 		f = float64(a)
@@ -114,6 +114,15 @@ func ToFloat64(a interface{}) (f float64, err error) {
 		err = fmt.Errorf("not a number")
 	}
 	return
+}
+
+func ToFloat64(a interface{}) float64 {
+	f, err := ParseFloat64(a)
+	if err != nil {
+		Fatal(err)
+		return 0
+	}
+	return f
 }
 
 func Dye(highlight int, color string, args ...interface{}) string {

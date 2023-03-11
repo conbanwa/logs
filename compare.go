@@ -15,8 +15,8 @@ func Same(a, b interface{}) bool {
 	if reflect.TypeOf(a).Comparable() && reflect.TypeOf(b).Comparable() && a == b {
 		return true
 	}
-	fa, era := ToFloat64(a)
-	fb, erb := ToFloat64(b)
+	fa, era := ParseFloat64(a)
+	fb, erb := ParseFloat64(b)
 	if era == nil && erb == nil {
 		return fa == fb
 	}
@@ -181,7 +181,7 @@ func PanicIfFalse(b bool, args ...interface{}) {
 	}
 }
 
-//Assert is a shortcut for FatalIfFalse
+// Assert is a shortcut for FatalIfFalse
 func Assert(b bool, args ...interface{}) {
 	if !b {
 		Log.output(FATAL, A, Concat(args...))
