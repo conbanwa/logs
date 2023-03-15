@@ -103,10 +103,6 @@ func (l *Logger) SetLogLevel(level Level) {
 
 func (l *Logger) output(le Level, prefix string, log string) {
 	if le >= l.level {
-		if InlineEnd {
-			Inline("\n")
-			InlineEnd = false
-		}
 		l.Output(3, fmt.Sprintf("%s %s", prefix, log))
 	}
 	if le >= PANIC {

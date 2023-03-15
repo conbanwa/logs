@@ -161,5 +161,4 @@ func Inline(args ...interface{}) {
 	//output to stdout
 	b := []byte(str)
 	os.Stderr.Write(b)
-	InlineEnd = true
 }

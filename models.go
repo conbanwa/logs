@@ -16,7 +16,6 @@ var (
 	F         = fmt.Sprintf("\033[1;31;40m%s\033[0m", "F")
 	A         = fmt.Sprintf("\033[1;34;40m%s\033[0m", "A")
 	C         = fmt.Sprintf("\033[1;34;40m%s\033[0m", "C")
-	InlineEnd = false
 )
 
 const (
