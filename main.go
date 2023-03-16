@@ -7,34 +7,6 @@ import (
 // @version 0.2.8
 // @license.name last updated at 2023/3/11 20:59:41
 
-func Highlight(color string, args ...interface{}) {
-	Log.output(INFO, I, Dye(1, color, args...))
-}
-
-func Red(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "red", args...))
-}
-
-func Green(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "green", args...))
-}
-
-func Yellow(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "yellow", args...))
-}
-
-func Blue(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "blue", args...))
-}
-
-func Magenta(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "magenta", args...))
-}
-
-func Cyan(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "cyan", args...))
-}
-
 func SetLogLevel(level Level) {
 	Log.SetLogLevel(level)
 }
