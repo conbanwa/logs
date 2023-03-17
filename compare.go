@@ -53,18 +53,22 @@ func ErrorIfNotSame(a, b interface{}, args ...interface{}) bool {
 	return false
 }
 
-func PanicIfNotSame(a, b interface{}, args ...interface{}) {
+func PanicIfNotSame(a, b interface{}, args ...interface{}) bool {
 	if !Same(a, b) {
 		Log.output(PANIC, P, Concat(append(args, ": ", a, "not equal to", b)...))
 		Panic(a, b)
+		return true
 	}
+	return false
 }
 
-func FatalIfNotSame(a, b interface{}, args ...interface{}) {
+func FatalIfNotSame(a, b interface{}, args ...interface{}) bool {
 	if !Same(a, b) {
 		Log.output(FATAL, F, Concat(append(args, ": ", a, "not equal to", b)...))
 		exit(1)
+		return true
 	}
+	return false
 }
 
 func AppendIfNotNil(err *error, args ...interface{}) bool {
@@ -76,34 +80,38 @@ func AppendIfNotNil(err *error, args ...interface{}) bool {
 	return false
 }
 
-func NotNil(err error, args ...interface{}) bool {
+func ErrNotNil(err interface{}, args ...interface{}) bool {
 	if err != nil {
-		Log.output(INFO, I, err.Error()+":"+Concat(args...))
+		Log.output(INFO, I, fmt.Sprint(err)+Concat(args...))
 		return true
 	}
 	return false
 }
 
-func ErrorIfNotNil(err error, args ...interface{}) bool {
+func ErrorIfNotNil(err interface{}, args ...interface{}) bool {
 	if err != nil {
-		Log.output(ERROR, E, err.Error()+":"+Concat(args...))
+		Log.output(ERROR, E, fmt.Sprint(err)+Concat(args...))
 		return true
 	}
 	return false
 }
 
-func PanicIfNotNil(err error, args ...interface{}) {
+func PanicIfNotNil(err interface{}, args ...interface{}) bool {
 	if err != nil {
-		Log.output(PANIC, P, err.Error()+":"+Concat(args...))
-		Panic(err.Error() + Concat(args...))
+		Log.output(PANIC, P, fmt.Sprint(err)+Concat(args...))
+		Panic(err)
+		return true
 	}
+	return false
 }
 
-func FatalIfNotNil(err error, args ...interface{}) {
+func FatalIfNotNil(err interface{}, args ...interface{}) bool {
 	if err != nil {
-		Log.output(FATAL, F, err.Error()+":"+Concat(args...))
+		Log.output(FATAL, F, fmt.Sprint(err)+Concat(args...))
 		exit(1)
+		return true
 	}
+	return false
 }
 
 func Uniform(args ...interface{}) bool {
@@ -152,18 +160,22 @@ func ErrorIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) bool {
 	return false
 }
 
-func PanicIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) {
+func PanicIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) bool {
 	if a != b {
 		Log.output(PANIC, P, Concat(append(args, ": ", a, "not exactly equal to", b)...))
 		Panic(a, b)
+		return true
 	}
+	return false
 }
 
-func FatalIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) {
+func FatalIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) bool {
 	if a != b {
 		Log.output(FATAL, F, Concat(append(args, ": ", a, "not exactly equal to", b)...))
 		exit(1)
+		return true
 	}
+	return false
 }
 
 func IfFalse(b bool, args ...interface{}) bool {
@@ -174,17 +186,38 @@ func IfFalse(b bool, args ...interface{}) bool {
 	return false
 }
 
-func PanicIfFalse(b bool, args ...interface{}) {
+func PanicIfFalse(b bool, args ...interface{}) bool {
 	if !b {
 		Log.output(PANIC, A, Concat(args...))
 		Panic(args...)
+		return true
 	}
+	return false
+}
+
+func If(b bool, args ...interface{}) bool {
+	if b {
+		Log.output(INFO, A, Concat(args...))
+		return true
+	}
+	return false
+}
+
+func PanicIf(b bool, args ...interface{}) bool {
+	if b {
+		Log.output(PANIC, A, Concat(args...))
+		Panic(args...)
+		return true
+	}
+	return false
 }
 
 // Assert is a shortcut for FatalIfFalse
-func Assert(b bool, args ...interface{}) {
+func Assert(b bool, args ...interface{}) bool {
 	if !b {
 		Log.output(FATAL, A, Concat(args...))
 		exit(1)
+		return true
 	}
+	return false
 }

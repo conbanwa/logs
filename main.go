@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// @version 0.2.8
+// @version 0.2.9
 // @license.name last updated at 2023/3/11 20:59:41
 
 func SetLogLevel(level Level) {
