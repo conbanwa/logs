@@ -80,7 +80,7 @@ func AppendIfNotNil(err *error, args ...interface{}) bool {
 	return false
 }
 
-func ErrNotNil(err interface{}, args ...interface{}) bool {
+func NotNil(err interface{}, args ...interface{}) bool {
 	if err != nil {
 		Log.output(INFO, I, fmt.Sprint(err)+Concat(args...))
 		return true
@@ -195,6 +195,16 @@ func PanicIfFalse(b bool, args ...interface{}) bool {
 	return false
 }
 
+// Assert is a shortcut for FatalIfFalse
+func Assert(b bool, args ...interface{}) bool {
+	if !b {
+		Log.output(FATAL, A, Concat(args...))
+		exit(1)
+		return true
+	}
+	return false
+}
+
 func If(b bool, args ...interface{}) bool {
 	if b {
 		Log.output(INFO, A, Concat(args...))
@@ -212,9 +222,8 @@ func PanicIf(b bool, args ...interface{}) bool {
 	return false
 }
 
-// Assert is a shortcut for FatalIfFalse
-func Assert(b bool, args ...interface{}) bool {
-	if !b {
+func FatalIf(b bool, args ...interface{}) bool {
+	if b {
 		Log.output(FATAL, A, Concat(args...))
 		exit(1)
 		return true
