@@ -58,6 +58,11 @@ func ConcatWith(separator string, args ...interface{}) (str string) {
 	return
 }
 
+func Err(args ...interface{}) error {
+	str := Concat(args...)
+	return fmt.Errorf(str)
+}
+
 // SetLogLevel by string
 func SetLevel(level string) {
 	SetLogLevel(StringLevel(level))
