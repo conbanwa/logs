@@ -2,6 +2,7 @@ package logs
 
 import (
 	"fmt"
+	"net"
 	"io"
 	"log"
 	"os"
@@ -166,4 +167,28 @@ func Inline(args ...interface{}) {
 	//output to stdout
 	b := []byte(str)
 	os.Stderr.Write(b)
+}
+
+func IpList() []string {
+	var ips []string
+	addrList, err := net.InterfaceAddrs()
+	if err != nil {
+		ErrorIfNotNil(err)
+	}
+	for _, address := range addrList {
+		if ipNet, ok := address.(*net.IPNet); ok && !ipNet.IP.IsLoopback() {
+			if ipNet.IP.To4() != nil {
+				ips = append(ips, ipNet.IP.String())
+			}
+		}
+	}
+	return ips
+}
+
+func Table[T any](arr []T, args ...any) {
+	out := fmt.Sprint(args...) + "\n"
+	for i, a := range arr {
+		out += fmt.Sprintf("%d|%+v\n", i, a)
+	}
+	l.output(INFO, I, out)
 }
