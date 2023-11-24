@@ -190,5 +190,5 @@ func Table[T any](arr []T, args ...any) {
 	for i, a := range arr {
 		out += fmt.Sprintf("%d|%+v\n", i, a)
 	}
-	l.output(INFO, I, out)
+	Log.output(INFO, I, out)
 }
