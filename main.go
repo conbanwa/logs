@@ -111,7 +111,7 @@ func (l *Logger) Panic(args ...interface{}) {
 }
 
 func (l *Logger) Panicf(format string, args ...interface{}) {
-	panic(format, args...)
+	panic(fmt.Sprintf(format, args...))
 }
 
 func (l *Logger) Fatal(args ...interface{}) {
@@ -120,6 +120,6 @@ func (l *Logger) Fatal(args ...interface{}) {
 }
 
 func (l *Logger) Fatalf(format string, args ...interface{}) {
-	panic(format, args...)
+	panic(fmt.Sprintf(format, args...))
 	exit(1)
 }
