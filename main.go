@@ -43,30 +43,22 @@ func Errorf(format string, args ...interface{}) {
 	Log.output(ERROR, E, fmt.Sprintf(format, args...))
 }
 
-func Fatal(args ...interface{}) {
-	if Log.level <= FATAL {
-		Log.output(FATAL, F, Concat(args...))
-		exit(1)
-	}
-}
-
-func Fatalf(format string, args ...interface{}) {
-	if Log.level <= FATAL {
-		Log.output(FATAL, F, fmt.Sprintf(format, args...))
-		exit(1)
-	}
-}
-
 func Panic(args ...interface{}) {
-	if Log.level <= PANIC {
-		Log.output(PANIC, P, Concat(args...))
-	}
+	panic(Concat(args...))
 }
 
 func Panicf(format string, args ...interface{}) {
-	if Log.level <= PANIC {
-		Log.output(PANIC, P, fmt.Sprintf(format, args...))
-	}
+	panic(fmt.Sprintf(format, args...))
+}
+
+func Fatal(args ...interface{}) {
+	panic(Concat(args...))
+	exit(1)
+}
+
+func Fatalf(format string, args ...interface{}) {
+	panic(fmt.Sprintf(format, args...))
+	exit(1)
 }
 
 func (l *Logger) SetLogLevel(level Level) {
@@ -114,30 +106,20 @@ func (l *Logger) Errorf(format string, args ...interface{}) {
 	l.output(ERROR, E, fmt.Sprintf(format, args...))
 }
 
-func (l *Logger) Fatal(args ...interface{}) {
-	if l.level <= FATAL {
-		l.output(FATAL, F, fmt.Sprint(args...))
-		exit(1)
-	}
-}
-
-func (l *Logger) Fatalf(format string, args ...interface{}) {
-	if l.level <= FATAL {
-		l.output(FATAL, F, fmt.Sprintf(format, args...))
-		exit(1)
-	}
-}
-
 func (l *Logger) Panic(args ...interface{}) {
-	if l.level <= PANIC {
-		s := fmt.Sprint(args...)
-		l.output(PANIC, P, s)
-	}
+	panic(Concat(args...))
 }
 
 func (l *Logger) Panicf(format string, args ...interface{}) {
-	if l.level <= PANIC {
-		s := fmt.Sprintf(format, args...)
-		l.output(PANIC, P, s)
-	}
+	panic((format, args...))
+}
+
+func (l *Logger) Fatal(args ...interface{}) {
+	panic(Concat(args...))
+	exit(1)
+}
+
+func (l *Logger) Fatalf(format string, args ...interface{}) {
+	panic((format, args...))
+	exit(1)
 }
