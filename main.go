@@ -67,7 +67,7 @@ func (l *Logger) SetLogLevel(level Level) {
 
 func (l *Logger) output(le Level, prefix string, log string) {
 	if le >= l.level {
-		l.Output(5, fmt.Sprintf("%s %s", prefix, log))
+		l.Output(3, fmt.Sprintf("%s %s", prefix, log))
 	}
 	if le >= PANIC {
 		panic(log)
