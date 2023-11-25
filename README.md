@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	os.Setenv("LOG_LEVEL", "DEBUG")
+    os.Setenv("LOG_LEVEL", "DEBUG")
     logs.Info("hello world")
     logs.Blue("hello world")
     logs.Green("hello world")

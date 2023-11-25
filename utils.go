@@ -2,9 +2,9 @@ package logs
 
 import (
 	"fmt"
-	"net"
 	"io"
 	"log"
+	"net"
 	"os"
 	"strconv"
 )
@@ -28,12 +28,12 @@ func NewLogger() *Logger {
 	if os.Getenv("ENV") != "" {
 		return &Logger{
 			Logger: log.New(os.Stderr, "", log.Lshortfile|log.Ltime|log.Lmsgprefix|log.Lmicroseconds),
-			level:  DEBUG,
+			level:  L_DEBUG,
 		}
 	}
 	return &Logger{
 		Logger: log.New(os.Stderr, "", log.Llongfile|log.Ltime|log.Lmsgprefix),
-		level:  DEBUG,
+		level:  L_DEBUG,
 	}
 }
 
@@ -72,19 +72,19 @@ func SetLevel(level string) {
 func StringLevel(level string) Level {
 	switch level {
 	case "debug", "DEBUG":
-		return DEBUG
+		return L_DEBUG
 	case "info", "INFO":
-		return INFO
+		return L_INFO
 	case "warn", "WARN":
-		return WARN
+		return L_WARN
 	case "error", "ERROR":
-		return ERROR
+		return L_ERROR
 	case "fatal", "FATAL":
-		return FATAL
+		return L_FATAL
 	case "panic", "PANIC":
-		return PANIC
+		return L_PANIC
 	default:
-		return DEBUG
+		return L_DEBUG
 	}
 }
 
@@ -154,7 +154,7 @@ func Dye(highlight int, color string, args ...interface{}) string {
 }
 
 func Sprint(args ...interface{}) string {
-	Log.output(INFO, I, Concat(args...))
+	Log.output(L_INFO, i, Concat(args...))
 	return Concat(args...)
 }
 
@@ -190,5 +190,5 @@ func Table[T any](arr []T, args ...any) {
 	for i, a := range arr {
 		out += fmt.Sprintf("%d|%+v\n", i, a)
 	}
-	Log.output(INFO, I, out)
+	Log.output(L_INFO, i, out)
 }

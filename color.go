@@ -1,29 +1,29 @@
 package logs
 
 func Red(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "red", args...))
+	Log.output(L_INFO, i, Dye(0, "red", args...))
 }
 
 func Green(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "green", args...))
+	Log.output(L_INFO, i, Dye(0, "green", args...))
 }
 
 func Yellow(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "yellow", args...))
+	Log.output(L_INFO, i, Dye(0, "yellow", args...))
 }
 
 func Blue(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "blue", args...))
+	Log.output(L_INFO, i, Dye(0, "blue", args...))
 }
 
 func Magenta(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "magenta", args...))
+	Log.output(L_INFO, i, Dye(0, "magenta", args...))
 }
 
 func Cyan(args ...interface{}) {
-	Log.output(INFO, I, Dye(0, "cyan", args...))
+	Log.output(L_INFO, i, Dye(0, "cyan", args...))
 }
 
 func Highlight(color string, args ...interface{}) {
-	Log.output(INFO, I, Dye(1, color, args...))
+	Log.output(L_INFO, i, Dye(1, color, args...))
 }
