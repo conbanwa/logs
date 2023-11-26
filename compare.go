@@ -56,7 +56,7 @@ func ErrorIfNotSame(a, b interface{}, args ...interface{}) bool {
 func PanicIfNotSame(a, b interface{}, args ...interface{}) bool {
 	if !Same(a, b) {
 		Log.output(L_PANIC, p, Concat(append(args, ": ", a, "not equal to", b)...))
-		Panic(a, b)
+		P(a, b)
 		return true
 	}
 	return false
@@ -99,7 +99,7 @@ func ErrorIfNotNil(err interface{}, args ...interface{}) bool {
 func PanicIfNotNil(err interface{}, args ...interface{}) bool {
 	if err != nil {
 		Log.output(L_PANIC, p, fmt.Sprint(err)+Concat(args...))
-		Panic(err)
+		P(err)
 		return true
 	}
 	return false
@@ -163,7 +163,7 @@ func ErrorIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) bool {
 func PanicIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) bool {
 	if a != b {
 		Log.output(L_PANIC, p, Concat(append(args, ": ", a, "not exactly equal to", b)...))
-		Panic(a, b)
+		P(a, b)
 		return true
 	}
 	return false
@@ -189,7 +189,7 @@ func IfFalse(b bool, args ...interface{}) bool {
 func PanicIfFalse(b bool, args ...interface{}) bool {
 	if !b {
 		Log.output(L_PANIC, a, Concat(args...))
-		Panic(args...)
+		P(args...)
 		return true
 	}
 	return false
@@ -216,7 +216,7 @@ func If(b bool, args ...interface{}) bool {
 func PanicIf(b bool, args ...interface{}) bool {
 	if b {
 		Log.output(L_PANIC, a, Concat(args...))
-		Panic(args...)
+		P(args...)
 		return true
 	}
 	return false

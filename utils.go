@@ -18,8 +18,8 @@ func init() {
 		if err == nil {
 			SetOut(f)
 		} else {
-			Warn("log file not open ??? ")
-			Error(err.Error())
+			W("log file not open ??? ")
+			E(err.Error())
 		}
 	}
 }
@@ -125,7 +125,7 @@ func ParseFloat64(a interface{}) (f float64, err error) {
 func ToFloat64(a interface{}) float64 {
 	f, err := ParseFloat64(a)
 	if err != nil {
-		Fatal(err)
+		F(err)
 		return 0
 	}
 	return f
@@ -163,7 +163,7 @@ func exit(code int) {
 }
 
 func Inline(args ...interface{}) {
-	str := Concat(args...)
+	str := Concat(args...) + "|"
 	//output to stdout
 	b := []byte(str)
 	os.Stderr.Write(b)

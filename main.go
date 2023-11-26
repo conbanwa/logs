@@ -11,7 +11,7 @@ func SetLogLevel(level Level) {
 	Log.SetLogLevel(level)
 }
 
-func Debug(args ...interface{}) {
+func D(args ...interface{}) {
 	Log.output(L_DEBUG, d, Concat(args...))
 }
 
@@ -19,7 +19,7 @@ func Debugf(format string, args ...interface{}) {
 	Log.output(L_DEBUG, d, fmt.Sprintf(format, args...))
 }
 
-func Info(args ...interface{}) {
+func I(args ...interface{}) {
 	Log.output(L_INFO, i, Concat(args...))
 }
 
@@ -27,7 +27,7 @@ func Infof(format string, args ...interface{}) {
 	Log.output(L_INFO, i, fmt.Sprintf(format, args...))
 }
 
-func Warn(args ...interface{}) {
+func W(args ...interface{}) {
 	Log.output(L_WARN, w, Concat(args...))
 }
 
@@ -35,7 +35,7 @@ func Warnf(format string, args ...interface{}) {
 	Log.output(L_WARN, w, fmt.Sprintf(format, args...))
 }
 
-func Error(args ...interface{}) {
+func E(args ...interface{}) {
 	Log.output(L_ERROR, e, Concat(args...))
 }
 
@@ -43,7 +43,7 @@ func Errorf(format string, args ...interface{}) {
 	Log.output(L_ERROR, e, fmt.Sprintf(format, args...))
 }
 
-func Panic(args ...interface{}) {
+func P(args ...interface{}) {
 	panic(Concat(args...))
 }
 
@@ -51,7 +51,7 @@ func Panicf(format string, args ...interface{}) {
 	panic(fmt.Sprintf(format, args...))
 }
 
-func Fatal(args ...interface{}) {
+func F(args ...interface{}) {
 	panic(Concat(args...))
 	exit(1)
 }
