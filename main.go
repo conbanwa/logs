@@ -7,10 +7,6 @@ import (
 // @version 0.3.3
 // @license.name last updated at 2023/7/14 23:26:34
 
-func SetLogLevel(level Level) {
-	Log.SetLogLevel(level)
-}
-
 func D(args ...interface{}) {
 	Log.output(L_DEBUG, d, Concat(args...))
 }
@@ -61,12 +57,8 @@ func Fatalf(format string, args ...interface{}) {
 	exit(1)
 }
 
-func (l *Logger) SetLogLevel(level Level) {
-	l.level = level
-}
-
 func (l *Logger) output(le Level, prefix string, log string) {
-	if le >= l.level {
+	if le >= l.Level {
 		l.Output(3, fmt.Sprintf("%s %s", prefix, log))
 	}
 	if le >= L_PANIC {

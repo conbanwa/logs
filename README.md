@@ -18,7 +18,7 @@ import (
 
 func main() {
     os.Setenv("LOG_LEVEL", "DEBUG")
-    logs.Info("hello world")
+    logs.I("hello world")
     logs.Blue("hello world")
     logs.Green("hello world")
     logs.NotSame(2+3, '5', "2+3 is not 5")

@@ -28,12 +28,12 @@ func NewLogger() *Logger {
 	if os.Getenv("ENV") != "" {
 		return &Logger{
 			Logger: log.New(os.Stderr, "", log.Lshortfile|log.Ltime|log.Lmsgprefix|log.Lmicroseconds),
-			level:  L_DEBUG,
+			Level:  L_DEBUG,
 		}
 	}
 	return &Logger{
 		Logger: log.New(os.Stderr, "", log.Llongfile|log.Ltime|log.Lmsgprefix),
-		level:  L_DEBUG,
+		Level:  L_DEBUG,
 	}
 }
 
@@ -66,7 +66,7 @@ func Err(args ...interface{}) error {
 
 // SetLogLevel by string
 func SetLevel(level string) {
-	SetLogLevel(StringLevel(level))
+	Log.Level = StringLevel(level)
 }
 
 func StringLevel(level string) Level {
@@ -163,6 +163,9 @@ func exit(code int) {
 }
 
 func Inline(args ...interface{}) {
+	if Log.Level <= L_DEBUG {
+		return
+	}
 	str := Concat(args...) + "|"
 	//output to stdout
 	b := []byte(str)

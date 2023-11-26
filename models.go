@@ -31,5 +31,5 @@ type Level int
 
 type Logger struct {
 	*log.Logger
-	level Level
+	Level Level
 }
