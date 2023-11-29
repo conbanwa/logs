@@ -163,7 +163,7 @@ func exit(code int) {
 }
 
 func Inline(args ...interface{}) {
-	if Log.Level <= L_DEBUG {
+	if Log.Level > L_DEBUG {
 		return
 	}
 	str := Concat(args...) + "|"
