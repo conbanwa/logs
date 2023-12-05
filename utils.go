@@ -46,8 +46,14 @@ func (l *Logger) SetOut(out io.Writer) {
 	l.Logger.SetOutput(out)
 }
 
-func Concat(args ...interface{}) (str string) {
-	return ConcatWith(" ", args...)
+func Concat(args ...interface{}) string {
+	return ReplaceBool(ConcatWith(" ", args...))
+}
+
+func ReplaceBool(args string) (str string) {
+	str = strings.Replace(str, "true", "√", -1)
+	str = strings.Replace(str, "false", "×", -1)
+	return
 }
 
 func ConcatWith(separator string, args ...interface{}) (str string) {
@@ -192,10 +198,7 @@ func IpList() []string {
 func Table[T any](arr []T, args ...any) {
 	out := Concat(args...) + "\n"
 	for i, a := range arr {
-		l := fmt.Sprintf("%d|%+v\n", i, a)
-		l = strings.Replace(l, "true", "√", -1)
-		l = strings.Replace(l, "false", "×", -1)
-		out += l
+		out += ReplaceBool(fmt.Sprintf("%d|%+v\n", i, a))
 	}
 	Log.output(L_INFO, i, out)
 }
