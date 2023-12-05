@@ -50,8 +50,8 @@ func Concat(args ...interface{}) string {
 	return ReplaceBool(ConcatWith(" ", args...))
 }
 
-func ReplaceBool(args string) (str string) {
-	str = strings.Replace(str, "true", "√", -1)
+func ReplaceBool(old string) (str string) {
+	str = strings.Replace(old, "true", "√", -1)
 	str = strings.Replace(str, "false", "×", -1)
 	return
 }
