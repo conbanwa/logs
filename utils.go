@@ -189,7 +189,7 @@ func IpList() []string {
 }
 
 func Table[T any](arr []T, args ...any) {
-	out := fmt.Sprint(args...) + "\n"
+	out := Concat(args...) + "\n"
 	for i, a := range arr {
 		out += fmt.Sprintf("%d|%+v\n", i, a)
 	}
