@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func init() {
@@ -191,7 +192,10 @@ func IpList() []string {
 func Table[T any](arr []T, args ...any) {
 	out := Concat(args...) + "\n"
 	for i, a := range arr {
-		out += fmt.Sprintf("%d|%+v\n", i, a)
+		l := fmt.Sprintf("%d|%+v\n", i, a)
+		l = strings.Replace(l, "true", "√", -1)
+		l = strings.Replace(l, "false", "×", -1)
+		out += l
 	}
 	Log.output(L_INFO, i, out)
 }
