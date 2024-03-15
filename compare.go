@@ -114,29 +114,14 @@ func FatalIfNotNil(err interface{}, args ...interface{}) bool {
 	return false
 }
 
-func Uniform(args ...interface{}) bool {
-	if len(args) == 0 {
-		return true
-	}
-	for i := 0; i < len(args); i++ {
-		for j := i + 1; j < len(args); j++ {
-			if !Same(args[i], args[j]) {
-				Log.output(L_ERROR, c, Concat(args...))
-				return false
-			}
-		}
-	}
-	return true
-}
-
-func Distinct(args ...interface{}) bool {
+func Distinct[T comparable](args ...T) bool {
 	if len(args) == 0 {
 		return true
 	}
 	for i := 0; i < len(args); i++ {
 		for j := i + 1; j < len(args); j++ {
 			if Same(args[i], args[j]) {
-				Log.output(L_ERROR, c, Concat(args...))
+				Log.output(L_ERROR, c, Concat(args[i], args[j],"is same"))
 				return false
 			}
 		}
@@ -144,38 +129,19 @@ func Distinct(args ...interface{}) bool {
 	return true
 }
 
-func ValueOrTypeNotEqual(a, b interface{}, args ...interface{}) bool {
-	if a != b {
-		Log.output(L_INFO, i, Concat(append(args, ": ", a, "not exactly equal to", b)...))
+func Uniform[T comparable](args ...T) bool {
+	if len(args) == 0 {
 		return true
 	}
-	return false
-}
-
-func ErrorIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) bool {
-	if a != b {
-		Log.output(L_ERROR, e, Concat(append(args, ": ", a, "not exactly equal to", b)...))
-		return true
+	for i := 0; i < len(args); i++ {
+		for j := i + 1; j < len(args); j++ {
+			if !Same(args[i], args[j]) {
+				Log.output(L_ERROR, c, Concat(args[i], args[j], "is not same"))
+				return false
+			}
+		}
 	}
-	return false
-}
-
-func PanicIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) bool {
-	if a != b {
-		Log.output(L_PANIC, p, Concat(append(args, ": ", a, "not exactly equal to", b)...))
-		P(a, b)
-		return true
-	}
-	return false
-}
-
-func FatalIfValueOrTypeNotEqual(a, b interface{}, args ...interface{}) bool {
-	if a != b {
-		Log.output(L_FATAL, f, Concat(append(args, ": ", a, "not exactly equal to", b)...))
-		exit(1)
-		return true
-	}
-	return false
+	return true
 }
 
 func IfFalse(b bool, args ...interface{}) bool {
