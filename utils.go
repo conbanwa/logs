@@ -52,7 +52,7 @@ func Concat(args ...interface{}) string {
 
 func ReplaceBool(old string) (str string) {
 	str = strings.Replace(old, "true", "√", -1)
-	str = strings.Replace(str, "false", "×", -1)
+	str = strings.Replace(str, "false", "x", -1)
 	return
 }
 
@@ -93,49 +93,6 @@ func StringLevel(level string) Level {
 	default:
 		return L_DEBUG
 	}
-}
-
-func ParseFloat64(a interface{}) (f float64, err error) {
-	switch a := a.(type) {
-	case int:
-		f = float64(a)
-	case int8:
-		f = float64(a)
-	case int16:
-		f = float64(a)
-	case int32:
-		f = float64(a)
-	case int64:
-		f = float64(a)
-	case uint:
-		f = float64(a)
-	case uint8:
-		f = float64(a)
-	case uint16:
-		f = float64(a)
-	case uint32:
-		f = float64(a)
-	case uint64:
-		f = float64(a)
-	case float32:
-		f = float64(a)
-	case float64:
-		f = a
-	case string:
-		f, err = strconv.ParseFloat(a, 64)
-	default:
-		err = fmt.Errorf("not a number")
-	}
-	return
-}
-
-func ToFloat64(a interface{}) float64 {
-	f, err := ParseFloat64(a)
-	if err != nil {
-		F(err)
-		return 0
-	}
-	return f
 }
 
 func Dye(highlight int, color string, args ...interface{}) string {
@@ -193,12 +150,4 @@ func IpList() []string {
 		}
 	}
 	return ips
-}
-
-func Table[T any](arr []T, args ...any) {
-	out := Concat(args...) + "\n"
-	for i, a := range arr {
-		out += ReplaceBool(fmt.Sprintf("%d|%+v\n", i, a))
-	}
-	Log.output(L_INFO, i, out)
 }
