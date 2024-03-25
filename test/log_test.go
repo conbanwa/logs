@@ -20,3 +20,7 @@ func TestLog(t *testing.T) {
 	logs.Blue("hello world")
 	logs.W("hello world")
 }
+
+func TestWrite(t *testing.T) {
+	logs.Inline("test")
+}

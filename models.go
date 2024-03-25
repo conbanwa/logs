@@ -14,8 +14,7 @@ var (
 	w   = fmt.Sprintf("\033[1;33;40m%s\033[0m", "W")
 	p   = fmt.Sprintf("\033[1;35;40m%s\033[0m", "P")
 	f   = fmt.Sprintf("\033[1;31;40m%s\033[0m", "F")
-	a   = fmt.Sprintf("\033[1;34;40m%s\033[0m", "a")
-	c   = fmt.Sprintf("\033[1;34;40m%s\033[0m", "C")
+	A   = fmt.Sprintf("\033[1;34;40m%s\033[0m", "A")
 )
 
 const (

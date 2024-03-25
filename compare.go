@@ -2,43 +2,23 @@ package logs
 
 import (
 	"fmt"
-	"reflect"
+	"github.com/stretchr/testify/assert"
 )
 
 func Same(a, b interface{}) bool {
-	if a == nil {
-		return b == nil
-	}
-	if b == nil {
-		return false
-	}
-	if reflect.TypeOf(a).Comparable() && reflect.TypeOf(b).Comparable() && a == b {
-		return true
-	}
-	fa, era := ParseFloat64(a)
-	fb, erb := ParseFloat64(b)
-	if era == nil && erb == nil {
-		return fa == fb
-	}
-	if fmt.Sprint(a) == fmt.Sprint(b) {
-		return true
-	}
-	if fmt.Sprintf("%v", a) == fmt.Sprintf("%v", b) {
+	return assert.ObjectsAreEqualValues(a, b)
+}
+
+func IfSame(a, b interface{}, args ...interface{}) bool {
+	if assert.ObjectsAreEqualValues(a, b) {
+		Log.output(L_INFO, A, Concat(append(args, ":", A)...))
 		return true
 	}
 	return false
 }
 
-func IfSame(d, b interface{}, args ...interface{}) bool {
-	if Same(d, b) {
-		Log.output(L_INFO, a, Concat(append(args, ":", a)...))
-		return true
-	}
-	return false
-}
-
-func NotSame(a, b interface{}, args ...interface{}) bool {
-	if !Same(a, b) {
+func IfNotSame(a, b interface{}, args ...interface{}) bool {
+	if !assert.ObjectsAreEqualValues(a, b) {
 		Log.output(L_INFO, i, Concat(append(args, ": ", a, "not equal to", b)...))
 		return true
 	}
@@ -46,7 +26,7 @@ func NotSame(a, b interface{}, args ...interface{}) bool {
 }
 
 func ErrorIfNotSame(a, b interface{}, args ...interface{}) bool {
-	if !Same(a, b) {
+	if !assert.ObjectsAreEqualValues(a, b) {
 		Log.output(L_ERROR, e, Concat(append(args, ": ", a, "not equal to", b)...))
 		return true
 	}
@@ -54,7 +34,7 @@ func ErrorIfNotSame(a, b interface{}, args ...interface{}) bool {
 }
 
 func PanicIfNotSame(a, b interface{}, args ...interface{}) bool {
-	if !Same(a, b) {
+	if !assert.ObjectsAreEqualValues(a, b) {
 		Log.output(L_PANIC, p, Concat(append(args, ": ", a, "not equal to", b)...))
 		P(a, b)
 		return true
@@ -63,18 +43,9 @@ func PanicIfNotSame(a, b interface{}, args ...interface{}) bool {
 }
 
 func FatalIfNotSame(a, b interface{}, args ...interface{}) bool {
-	if !Same(a, b) {
+	if !assert.ObjectsAreEqualValues(a, b) {
 		Log.output(L_FATAL, f, Concat(append(args, ": ", a, "not equal to", b)...))
 		exit(1)
-		return true
-	}
-	return false
-}
-
-func AppendIfNotNil(err *error, args ...interface{}) bool {
-	if *err != nil {
-		*err = fmt.Errorf("%v%v", *err, Concat(args...))
-		Log.output(L_ERROR, e, (*err).Error()+":"+Concat(args...))
 		return true
 	}
 	return false
@@ -114,39 +85,9 @@ func FatalIfNotNil(err interface{}, args ...interface{}) bool {
 	return false
 }
 
-func Distinct[T comparable](args ...T) bool {
-	if len(args) == 0 {
-		return true
-	}
-	for i := 0; i < len(args); i++ {
-		for j := i + 1; j < len(args); j++ {
-			if Same(args[i], args[j]) {
-				Log.output(L_ERROR, c, Concat(args[i], args[j],"is same"))
-				return false
-			}
-		}
-	}
-	return true
-}
-
-func Uniform[T comparable](args ...T) bool {
-	if len(args) == 0 {
-		return true
-	}
-	for i := 0; i < len(args); i++ {
-		for j := i + 1; j < len(args); j++ {
-			if !Same(args[i], args[j]) {
-				Log.output(L_ERROR, c, Concat(args[i], args[j], "is not same"))
-				return false
-			}
-		}
-	}
-	return true
-}
-
 func IfFalse(b bool, args ...interface{}) bool {
 	if !b {
-		Log.output(L_INFO, a, Concat(args...))
+		Log.output(L_INFO, A, Concat(args...))
 		return true
 	}
 	return false
@@ -154,7 +95,7 @@ func IfFalse(b bool, args ...interface{}) bool {
 
 func PanicIfFalse(b bool, args ...interface{}) bool {
 	if !b {
-		Log.output(L_PANIC, a, Concat(args...))
+		Log.output(L_PANIC, A, Concat(args...))
 		P(args...)
 		return true
 	}
@@ -164,7 +105,7 @@ func PanicIfFalse(b bool, args ...interface{}) bool {
 // Assert is a shortcut for FatalIfFalse
 func Assert(b bool, args ...interface{}) bool {
 	if !b {
-		Log.output(L_FATAL, a, Concat(args...))
+		Log.output(L_FATAL, A, Concat(args...))
 		exit(1)
 		return true
 	}
@@ -173,7 +114,7 @@ func Assert(b bool, args ...interface{}) bool {
 
 func If(b bool, args ...interface{}) bool {
 	if b {
-		Log.output(L_INFO, a, Concat(args...))
+		Log.output(L_INFO, A, Concat(args...))
 		return true
 	}
 	return false
@@ -181,7 +122,7 @@ func If(b bool, args ...interface{}) bool {
 
 func PanicIf(b bool, args ...interface{}) bool {
 	if b {
-		Log.output(L_PANIC, a, Concat(args...))
+		Log.output(L_PANIC, A, Concat(args...))
 		P(args...)
 		return true
 	}
@@ -190,7 +131,7 @@ func PanicIf(b bool, args ...interface{}) bool {
 
 func FatalIf(b bool, args ...interface{}) bool {
 	if b {
-		Log.output(L_FATAL, a, Concat(args...))
+		Log.output(L_FATAL, A, Concat(args...))
 		exit(1)
 		return true
 	}

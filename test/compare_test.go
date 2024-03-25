@@ -18,10 +18,6 @@ func TestSameNil(t *testing.T) {
 	t.Log(logs.Same(1, nil))
 }
 
-func TestWrite(t *testing.T) {
-	logs.Inline("test")
-}
-
 func TestEqual(t *testing.T) {
 	logs.ErrorIfNotSame(2+3, '5', "2+3 is not 5")
 	t.Log(logs.Same(array, array2))

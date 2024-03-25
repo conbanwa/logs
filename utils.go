@@ -71,6 +71,15 @@ func Err(args ...interface{}) error {
 	return fmt.Errorf(str)
 }
 
+func AppendIfNotNil(err *error, args ...interface{}) bool {
+	if *err != nil {
+		*err = fmt.Errorf("%v%v", *err, Concat(args...))
+		Log.output(L_ERROR, e, (*err).Error()+":"+Concat(args...))
+		return true
+	}
+	return false
+}
+
 // SetLogLevel by string
 func SetLevel(level string) {
 	Log.Level = StringLevel(level)
