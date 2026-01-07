@@ -1,6 +1,6 @@
 module github.com/conbanwa/logs
 
-go 1.20.13
+go 1.20
 
 require github.com/stretchr/testify v1.9.0
 
